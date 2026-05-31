@@ -284,6 +284,13 @@ const translations = {
         { label: 'WhatsApp' },
         { label: 'LinkedIn' },
       ],
+      whatsapp: {
+        intro: 'Oi, Luna! Vim pelo site e gostaria de falar com voce.',
+        name: 'Nome',
+        email: 'E-mail',
+        subject: 'Assunto',
+        message: 'Mensagem',
+      },
       form: {
         name: 'Seu nome',
         email: 'Seu e-mail',
@@ -394,6 +401,13 @@ const translations = {
         { label: 'WhatsApp' },
         { label: 'LinkedIn' },
       ],
+      whatsapp: {
+        intro: 'Hi, Luna! I came from your website and would like to talk with you.',
+        name: 'Name',
+        email: 'E-mail',
+        subject: 'Subject',
+        message: 'Message',
+      },
       form: {
         name: 'Your name',
         email: 'Your e-mail',
@@ -504,6 +518,13 @@ const translations = {
         { label: 'WhatsApp' },
         { label: 'LinkedIn' },
       ],
+      whatsapp: {
+        intro: 'Hola, Luna! Vine desde tu sitio web y me gustaria hablar contigo.',
+        name: 'Nombre',
+        email: 'E-mail',
+        subject: 'Asunto',
+        message: 'Mensaje',
+      },
       form: {
         name: 'Tu nombre',
         email: 'Tu e-mail',
@@ -636,9 +657,19 @@ const iconLI    = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20
 const iconSun    = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`
 const iconMoon   = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`
 
+const whatsappNumber = '51996266650'
+
+function buildWhatsAppUrl(text = '') {
+  const baseUrl = `https://wa.me/${whatsappNumber}`
+
+  if (!text) return baseUrl
+
+  return `${baseUrl}?text=${encodeURIComponent(text)}`
+}
+
 const contactMeta = [
   { icon: iconEmail, label: 'E-mail',    href: 'mailto:lelefernanda2002@gmail.com',        value: 'lelefernanda2002@gmail.com' },
-  { icon: iconWA,    label: 'WhatsApp',  href: 'https://wa.me/message/UWPMJIPRFAPLH1',     value: '+51 996 266 650'            },
+  { icon: iconWA,    label: 'WhatsApp',  href: buildWhatsAppUrl(),                          value: '+51 996 266 650'            },
   { icon: iconLI,    label: 'LinkedIn',  href: 'https://www.linkedin.com/in/leticia-fernanda-assis-dos-santos-48a8a61b0', value: 'linkedin.com/in/leticia-fernanda' },
 ]
 
@@ -666,6 +697,20 @@ const form     = ref({ name: '', email: '', subject: '', message: '' })
 const formSent = ref(false)
 
 function handleSubmit() {
+  const whatsappCopy = copy.value.contact.whatsapp
+  const whatsappText = [
+    whatsappCopy.intro,
+    '',
+    `${whatsappCopy.name}: ${form.value.name}`,
+    `${whatsappCopy.email}: ${form.value.email}`,
+    `${whatsappCopy.subject}: ${form.value.subject}`,
+    `${whatsappCopy.message}: ${form.value.message}`,
+  ].join('\n')
+
+  if (import.meta.client) {
+    window.open(buildWhatsAppUrl(whatsappText), '_blank', 'noopener,noreferrer')
+  }
+
   formSent.value = true
   form.value = { name: '', email: '', subject: '', message: '' }
   setTimeout(() => { formSent.value = false }, 3000)
