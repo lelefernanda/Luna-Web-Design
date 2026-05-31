@@ -1338,6 +1338,6 @@ onUnmounted(() => {
   .form-row      { grid-template-columns: 1fr; }
   .nav-links     { display: none; }
   .nav-controls  { margin-left: auto; }
-  .nav-cta       { width: 100%; }
+  .nav-cta       { width: auto; padding: 0.48rem 0.95rem; font-size: 0.76rem; flex-shrink: 0; }
 }
 </style>
